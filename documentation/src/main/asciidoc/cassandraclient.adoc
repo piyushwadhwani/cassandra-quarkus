@@ -269,7 +269,7 @@ This behavior can be disabled by setting the `quarkus.cassandra.health.enabled` 
 == Metrics
 
 If you are using the `quarkus-smallrye-metrics` extension, `cassandra-quarkus` can provide metrics about CqlSession and Cassandra nodes.
-This behavior must first be enabled by setting the `quarkus.mongodb.metrics.enabled` property to `true` in your `application.properties`.
+This behavior must first be enabled by setting the `quarkus.cassandra.metrics.enabled` property to `true` in your `application.properties`.
 
 The next step that you need to do is set explicitly which metrics should be enabled.
 The `quarkus.cassandra.metrics.session-enabled` and `quarkus.cassandra.metrics.node-enabled` should be used for enabling metrics.
