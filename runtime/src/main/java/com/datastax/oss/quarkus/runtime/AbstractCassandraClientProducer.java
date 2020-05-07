@@ -30,6 +30,7 @@ import com.datastax.oss.quarkus.runtime.driver.QuarkusSessionBuilder;
 import com.datastax.oss.quarkus.runtime.metrics.MetricsConfig;
 import com.typesafe.config.ConfigFactory;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import io.netty.channel.EventLoopGroup;
 import java.util.concurrent.CompletionStage;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 
@@ -39,6 +40,8 @@ public abstract class AbstractCassandraClientProducer {
   private MetricsConfig metricsConfig;
   private MetricRegistry metricRegistry;
   private String protocolCompression;
+  private EventLoopGroup bossEventLoop;
+  private EventLoopGroup mainEventLoop;
 
   public void setCassandraClientConfig(CassandraClientConfig config) {
     this.config = config;
@@ -54,6 +57,15 @@ public abstract class AbstractCassandraClientProducer {
 
   public void setProtocolCompression(String protocolCompression) {
     this.protocolCompression = protocolCompression;
+  }
+
+  public void setMainEventLoop(EventLoopGroup mainEventLoop) {
+    this.mainEventLoop = mainEventLoop;
+  }
+
+  public void setBossEventLoop(EventLoopGroup bossEventLoop) {
+
+    this.bossEventLoop = bossEventLoop;
   }
 
   private ProgrammaticDriverConfigLoaderBuilder createDriverConfigLoader() {
@@ -91,6 +103,14 @@ public abstract class AbstractCassandraClientProducer {
     return protocolCompression;
   }
 
+  public EventLoopGroup getBossEventLoop() {
+    return bossEventLoop;
+  }
+
+  public EventLoopGroup getMainEventLoop() {
+    return mainEventLoop;
+  }
+
   public CqlSession createCassandraClient(
       CassandraClientConfig config,
       MetricsConfig metricsConfig,
@@ -101,7 +121,8 @@ public abstract class AbstractCassandraClientProducer {
     configureMetricsSettings(configLoaderBuilder, metricsConfig);
     configureProtocolCompression(configLoaderBuilder, protocolCompression);
     QuarkusSessionBuilder builder =
-        new QuarkusSessionBuilder(metricRegistry).withConfigLoader(configLoaderBuilder.build());
+        new QuarkusSessionBuilder(metricRegistry, mainEventLoop, bossEventLoop)
+            .withConfigLoader(configLoaderBuilder.build());
     return builder.build();
   }
 

@@ -255,6 +255,8 @@ class CassandraClientProcessor {
     } else {
       recorder.setNoopMetricRegistry();
     }
+
+    recorder.setInjectedNettyEventLoop();
   }
 
   @BuildStep

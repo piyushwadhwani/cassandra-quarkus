@@ -19,12 +19,16 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.metrics.MetricsConfig;
 import com.datastax.oss.quarkus.runtime.metrics.NoopMetricRegistry;
+import io.netty.channel.EventLoopGroup;
 import io.quarkus.arc.Arc;
 import io.quarkus.arc.runtime.BeanContainerListener;
+import io.quarkus.netty.BossEventLoopGroup;
+import io.quarkus.netty.MainEventLoopGroup;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import io.smallrye.metrics.MetricRegistries;
 import javax.enterprise.inject.Default;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.util.AnnotationLiteral;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 
@@ -37,8 +41,7 @@ public class CassandraClientRecorder {
   }
 
   public void configureRuntimeProperties(CassandraClientConfig config) {
-    AbstractCassandraClientProducer producer =
-        Arc.container().instance(AbstractCassandraClientProducer.class).get();
+    AbstractCassandraClientProducer producer = getProducerInstance();
     producer.setCassandraClientConfig(config);
   }
 
@@ -51,27 +54,50 @@ public class CassandraClientRecorder {
   }
 
   public void configureMetrics(MetricsConfig metricsConfig) {
-    AbstractCassandraClientProducer producer =
-        Arc.container().instance(AbstractCassandraClientProducer.class).get();
+    AbstractCassandraClientProducer producer = getProducerInstance();
     producer.setMetricsConfig(metricsConfig);
   }
 
   public void setInjectedMetricRegistry() {
-    AbstractCassandraClientProducer producer =
-        Arc.container().instance(AbstractCassandraClientProducer.class).get();
+    AbstractCassandraClientProducer producer = getProducerInstance();
     MetricRegistry metricRegistry = MetricRegistries.get(MetricRegistry.Type.VENDOR);
     producer.setMetricRegistry(metricRegistry);
   }
 
   public void setNoopMetricRegistry() {
-    AbstractCassandraClientProducer producer =
-        Arc.container().instance(AbstractCassandraClientProducer.class).get();
+    AbstractCassandraClientProducer producer = getProducerInstance();
     producer.setMetricRegistry(new NoopMetricRegistry());
   }
 
   public void configureCompression(String protocolCompression) {
-    AbstractCassandraClientProducer producer =
-        Arc.container().instance(AbstractCassandraClientProducer.class).get();
+    AbstractCassandraClientProducer producer = getProducerInstance();
     producer.setProtocolCompression(protocolCompression);
+  }
+
+  public void setInjectedNettyEventLoop() {
+    AbstractCassandraClientProducer producer = getProducerInstance();
+
+    // todo extract EventLoopGroup form this bean.
+    Bean<?> mainEventLoopBean =
+        Arc.container()
+            .beanManager()
+            .getBeans(EventLoopGroup.class, new AnnotationLiteral<MainEventLoopGroup>() {})
+            .iterator()
+            .next();
+    EventLoopGroup bossEventLoop =
+        Arc.container()
+            .instance(EventLoopGroup.class, BossEventLoopGroup.class.getAnnotations())
+            .get();
+    EventLoopGroup mainEventLoop =
+        (EventLoopGroup) Arc.container().instance(mainEventLoopBean.getName()).get();
+
+    Arc.container().beanManager().getBeans(EventLoopGroup.class).iterator().next();
+    //    Arc.container().beanManager().getBeans(EventLoopGroup.class).toArray()[1];
+    producer.setMainEventLoop(mainEventLoop);
+    producer.setBossEventLoop(bossEventLoop);
+  }
+
+  private AbstractCassandraClientProducer getProducerInstance() {
+    return Arc.container().instance(AbstractCassandraClientProducer.class).get();
   }
 }
