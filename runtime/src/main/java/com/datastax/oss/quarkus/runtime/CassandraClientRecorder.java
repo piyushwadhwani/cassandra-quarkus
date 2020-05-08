@@ -15,6 +15,7 @@
  */
 package com.datastax.oss.quarkus.runtime;
 
+
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.metrics.MetricsConfig;
@@ -28,7 +29,6 @@ import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import io.smallrye.metrics.MetricRegistries;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.util.AnnotationLiteral;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 
@@ -77,22 +77,16 @@ public class CassandraClientRecorder {
   public void setInjectedNettyEventLoop() {
     AbstractCassandraClientProducer producer = getProducerInstance();
 
-    // todo extract EventLoopGroup form this bean.
-    Bean<?> mainEventLoopBean =
+    EventLoopGroup mainEventLoop =
         Arc.container()
-            .beanManager()
-            .getBeans(EventLoopGroup.class, new AnnotationLiteral<MainEventLoopGroup>() {})
-            .iterator()
-            .next();
+            .instance(EventLoopGroup.class, new AnnotationLiteral<MainEventLoopGroup>() {})
+            .get();
+
     EventLoopGroup bossEventLoop =
         Arc.container()
             .instance(EventLoopGroup.class, BossEventLoopGroup.class.getAnnotations())
             .get();
-    EventLoopGroup mainEventLoop =
-        (EventLoopGroup) Arc.container().instance(mainEventLoopBean.getName()).get();
 
-    Arc.container().beanManager().getBeans(EventLoopGroup.class).iterator().next();
-    //    Arc.container().beanManager().getBeans(EventLoopGroup.class).toArray()[1];
     producer.setMainEventLoop(mainEventLoop);
     producer.setBossEventLoop(bossEventLoop);
   }
