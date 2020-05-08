@@ -15,7 +15,6 @@
  */
 package com.datastax.oss.quarkus.runtime;
 
-
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.metrics.MetricsConfig;
@@ -84,7 +83,7 @@ public class CassandraClientRecorder {
 
     EventLoopGroup bossEventLoop =
         Arc.container()
-            .instance(EventLoopGroup.class, BossEventLoopGroup.class.getAnnotations())
+            .instance(EventLoopGroup.class, new AnnotationLiteral<BossEventLoopGroup>() {})
             .get();
 
     producer.setMainEventLoop(mainEventLoop);
