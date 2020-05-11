@@ -61,7 +61,7 @@
             <!-- avoid content security policy violations -->
             <skip-front-matter>true</skip-front-matter>
             <quickstart-clone-url>${extension-url}/tree/master/quickstart</quickstart-clone-url>
-            <reference-conf-url>https://github.com/datastax/java-driver/blob/4.x/core/src/main/resources/reference.conf</reference-conf-url>
+            <reference-conf-url>${datastax-driver-documentation-url}/core/configuration/reference/</reference-conf-url>
             <fruits-html-url>${extension-url}/tree/master/quickstart/src/main/resources/META-INF/resources/fruits.html</fruits-html-url>
             <mapper-docs-url>${datastax-driver-documentation-url}/mapper</mapper-docs-url>
           </attributes>
