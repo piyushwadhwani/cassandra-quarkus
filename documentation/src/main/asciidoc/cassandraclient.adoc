@@ -2,7 +2,7 @@
 
 Cassandra is a well known NoSQL Database that is widely used.
 
-In this guide, we see how you can get your REST services to use the Cassandra database.
+In this guide, we will see how you can get your REST services to use a Cassandra database.
 
 == Prerequisites
 
