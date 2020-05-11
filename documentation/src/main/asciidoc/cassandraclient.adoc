@@ -209,7 +209,7 @@ The settings from `application.properties` with `quarkus.cassandra` prefix have 
 To see the full list of settings, please refer to the {reference-conf-url}[reference.conf]
 
 == Running a Cassandra Database
-As by default, `CassandraClient` is configured to access a local Cassandra database on port 9042 (the default Cassandra port).
+By default, `CassandraClient` is configured to access a local Cassandra database on port 9042 (the default Cassandra port).
 If you have a local running database on this port, you should assert that:
 `quarkus.cassandra.load-balancing-policy.local-datacenter` setting is equal to dc of your local cassandra instance.
 
@@ -229,15 +229,10 @@ docker run \
 ----
 Note that only the 9042 port is required. All others all optional but provide enhanced features like JMX monitoring of the C* instance.
 
-Next, you need to create the keyspace:
+Next you need to create the keyspace and table that will be used by your application:
 [source,shell]
 ----
 docker exec -it local-cassandra-instance cqlsh -e "CREATE KEYSPACE IF NOT EXISTS k1 WITH replication = {'class':'SimpleStrategy', 'replication_factor':1}"
-----
-
-And the Cassandra table that will be used by your quickstart application.
-[source,shell]
-----
 docker exec -it local-cassandra-instance cqlsh -e "CREATE TABLE IF NOT EXISTS k1.fruit(id text, name text, description text, PRIMARY KEY((id), name))"
 ----
 
