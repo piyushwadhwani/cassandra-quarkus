@@ -203,7 +203,7 @@ quarkus.cassandra.contact-points=127.0.0.1:9042
 quarkus.cassandra.load-balancing-policy.local-datacenter=datacenter1
 ----
 
-You can configure all java-driver settings using the `application.conf` or `application.json` files.
+You can configure all Java driver settings using `application.conf` or `application.json` files.
 They will be passed automatically to the underlying driver configuration mechanism.
 Settings defined in `application.properties` with the `quarkus.cassandra` prefix will have priority over settings defined in `application.conf` or `application.json`.
 
