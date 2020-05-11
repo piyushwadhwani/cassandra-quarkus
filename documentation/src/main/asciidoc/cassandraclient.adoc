@@ -70,9 +70,10 @@ public class Fruit {
   // getters, setters, hashCode and equals omitted for brevity
 }
 ----
-We are using ObjectMapper, due to that fact the class is annotated with an `@Entity`.
+We are using {mapper-docs-url}[DataStax Object Mapper],
+due to that fact the class is annotated with an `@Entity`.
 Also, the Fruit `id` is a `@PartitionKey` and `name` is a `@ClusteringColumn` so we are using the corresponding annotations
-from the ObjectMapper. It will allow the Mapper to generate proper CQL queries underneath.
+from the Object Mapper. It will allow the Mapper to generate proper CQL queries underneath.
 
 One important thing to note is that having a default constructor is required by the Object Mapper.
 
