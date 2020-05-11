@@ -283,7 +283,7 @@ quarkus.cassandra.metrics.node-enabled=pool.open-connections
 
 For the full list of available metrics, please refer to the {reference-conf-url}[reference.conf] and the `advanced.metrics` section.
 
-So when you access the `/metrics` endpoint of your application you will have information about added metrics.
+When metrics are properly enabled and when you access the `/metrics` endpoint of your application, you will see metric reports for all enabled metrics.
 
 == Building a native executable
 
