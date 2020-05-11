@@ -205,7 +205,7 @@ quarkus.cassandra.load-balancing-policy.local-datacenter=datacenter1
 
 You can configure all java-driver settings using the `application.conf` or `application.json` files.
 They will be passed automatically to the underlying driver configuration mechanism.
-The settings from `application.properties` with `quarkus.cassandra` prefix have the priority.
+Settings defined in `application.properties` with the `quarkus.cassandra` prefix will have priority over settings defined in `application.conf` or `application.json`.
 
 To see the full list of settings, please refer to the {reference-conf-url}[reference.conf]
 
