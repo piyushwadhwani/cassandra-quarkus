@@ -206,7 +206,7 @@ You can configure all Java driver settings using `application.conf` or `applicat
 They will be passed automatically to the underlying driver configuration mechanism.
 Settings defined in `application.properties` with the `quarkus.cassandra` prefix will have priority over settings defined in `application.conf` or `application.json`.
 
-To see the full list of settings, please refer to the {reference-conf-url}[reference.conf]
+To see the full list of settings, please refer to the {reference-conf-url}[reference.conf].
 
 == Running a Cassandra Database
 By default, `CassandraClient` is configured to access a local Cassandra database on port 9042 (the default Cassandra port).
