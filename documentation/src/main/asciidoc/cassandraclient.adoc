@@ -2,7 +2,7 @@
 
 Cassandra is a well known NoSQL Database that is widely used.
 
-In this guide, we see how you can get your REST services to use the Cassandra database.
+In this guide, we will see how you can get your REST services to use a Cassandra database.
 
 == Prerequisites
 
@@ -32,7 +32,7 @@ The solution is located in the `quickstart` {quickstart-clone-url}[directory].
 
 == Creating the Maven project
 
-First, we need a new project. Create a new maven project and copy the `pom.xml` file that is present in the `quickstart`.
+First, we need a new project. Create a new maven project and copy the `pom.xml` file that is present in the `quickstart` directory.
 
 The `pom.xml` is importing the RESTEasy/JAX-RS, JSON-B, Context Propagation and Cassandra Client extensions.
 We will be building a REST application using the DataStax Object Mapper{mapper-docs-url}[DataStax Object Mapper].
