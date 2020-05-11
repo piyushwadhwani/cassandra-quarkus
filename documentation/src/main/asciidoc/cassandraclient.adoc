@@ -236,7 +236,7 @@ docker exec -it local-cassandra-instance cqlsh -e "CREATE KEYSPACE IF NOT EXISTS
 docker exec -it local-cassandra-instance cqlsh -e "CREATE TABLE IF NOT EXISTS k1.fruit(id text, name text, description text, PRIMARY KEY((id), name))"
 ----
 
-For the local Cassandra that is not running within docker, you need to execute cqlsh commands:
+If you're running Cassandra locally you can execute the cqlsh commands directly:
 [source,shell]
 ----
 cqlsh -e "CREATE KEYSPACE IF NOT EXISTS k1 WITH replication = {'class':'SimpleStrategy', 'replication_factor':1}
