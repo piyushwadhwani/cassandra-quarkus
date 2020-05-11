@@ -156,7 +156,7 @@ public class FruitResource {
 
 The `list` and `add` operations are executed for the `STORE_NAME` id. This is a partition key of the data model.
 We can easily retrieve all rows from cassandra using the partition key. They will be sorted by the clustering key.
-The `FruitResource` is using the `FruitService` that encapsulates the data access logic.
+`FruitResource` is using `FruitService` which encapsulates the data access logic.
 
 When creating the REST API we should not share the same entity object between REST API and data access layers.
 They should not be coupled to allow evolving API independent of the storage layer.
