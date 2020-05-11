@@ -125,7 +125,7 @@ public class FruitService {
   }
 }
 ----
-Please note the construction of dao. It is using `CqlSession` injected automatically by the cassandra-quarkus extension.
+Please note the construction of `FruitDao` instance in the constructor. It uses a `CqlSession` instance injected automatically by the cassandra-quarkus extension.
 
 The last missing piece is the REST API that will expose GET and POST methods:
 [source,java]
