@@ -35,7 +35,8 @@ The solution is located in the `quickstart` {quickstart-clone-url}[directory].
 First, we need a new project. Create a new maven project and copy the `pom.xml` file that is present in the `quickstart`.
 
 The `pom.xml` is importing the RESTEasy/JAX-RS, JSON-B, Context Propagation and Cassandra Client extensions.
-We will be building a REST application that is using DataStax Object Mapper. It will simplify the Data Access Layer code.
+We will be building a REST application using the DataStax Object Mapper{mapper-docs-url}[DataStax Object Mapper].
+It will simplify the Data Access Layer code.
 
 The most important part of the `pom.xml` is adding the `cassandra-quarkus` extension:
 [source,xml]
@@ -70,7 +71,7 @@ public class Fruit {
   // getters, setters, hashCode and equals omitted for brevity
 }
 ----
-We are using {mapper-docs-url}[DataStax Object Mapper],
+We are using DataStax Object Mapper,
 due to that fact the class is annotated with an `@Entity`.
 Also, the Fruit `id` is a `@PartitionKey` and `name` is a `@ClusteringColumn` so we are using the corresponding annotations
 from the Object Mapper. It will allow the Mapper to generate proper CQL queries underneath.
