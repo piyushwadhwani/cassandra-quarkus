@@ -183,7 +183,7 @@ public class FruitDto {
 One important thing to note is that having a default constructor is required by the JSON serialization layer.
 
 == Configuring the Cassandra database
-The main two properties to configure are `contact-points` to access to Cassandra and `local-datacenter` to use when connecting.
+The main two properties to configure are `contact-points`, to access the Cassandra database, and `local-datacenter`, which is required by the driver.
 
 A sample configuration should look like this:
 
