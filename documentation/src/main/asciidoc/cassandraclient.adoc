@@ -160,7 +160,7 @@ We can easily retrieve all rows from cassandra using the partition key. They wil
 
 When creating the REST API we should not share the same entity object between REST API and data access layers.
 They should not be coupled to allow the API to evolve independently of the storage layer.
-This is the reason why the API is using the `FruitDto`.
+This is the reason why the API is using a `FruitDto` class.
 This class will be used by Quarkus to convert JSON to java object for client request and java object to JSON for the response.
 The translation is done by quarkus-resteasy extension.
 [source,java]
