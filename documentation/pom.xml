@@ -31,7 +31,7 @@
     <asciidoctor-maven-plugin.version>2.0.0-RC.1</asciidoctor-maven-plugin.version>
     <asciidoctorj-pdf.version>1.5.3</asciidoctorj-pdf.version>
     <extension-url>https://github.com/datastax/cassandra-quarkus</extension-url>
-    <datastax-driver-documentation-url>https://docs.datastax.com/en/developer/java-driver/latest/manual/</datastax-driver-documentation-url>
+    <datastax-driver-documentation-url>https://docs.datastax.com/en/developer/java-driver/latest/manual</datastax-driver-documentation-url>
     <skipDocs>false</skipDocs>
   </properties>
   <build>
