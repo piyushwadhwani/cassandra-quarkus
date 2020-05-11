@@ -102,7 +102,7 @@ public interface FruitMapper {
   FruitDao fruitDao(@DaoKeyspace CqlIdentifier keyspace);
 }
 ----
-It is constructing the `FruitDao`.
+The mapper is responsible for constructing instances of `FruitDao`.
 
 Now create a `com.datastax.oss.quarkus.FruitService` that will be the business layer of our application and store/load the fruits from the Cassandra database.
 [source,java]
