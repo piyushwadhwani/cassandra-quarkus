@@ -104,6 +104,26 @@ public interface FruitMapper {
 ----
 The mapper is responsible for constructing instances of `FruitDao`.
 
+The `FruitDao` should be created for a specific keyspace. We should make it parameterized by using the Quarkus `@ConfigProperties` mechanism.
+Firstly, let's define the `FruitServiceConfig` class that will contain the keyspace setting:
+[source,java]
+----
+
+@ConfigProperties(prefix = "fruit.dao")
+public class FruitServiceConfig {
+  /** Keyspace that should be used when creating a fruit dao. */
+  String keyspace;
+
+  // getter and setter omitted for brevity
+}
+----
+When starting the Quarkus app, it will try to fetch the `fruit.dao.keyspace` setting from the `application.properties` file.
+To make it work, we need to add this setting to the `application.properties` file:
+[source, properties]
+----
+fruit.dao.keyspace=k1
+----
+
 Now create a `com.datastax.oss.quarkus.FruitService` that will be the business layer of our application and store/load the fruits from the Cassandra database.
 [source,java]
 ----
@@ -112,8 +132,11 @@ public class FruitService {
   private final FruitDao dao;
 
   @Inject
-  public FruitService(CqlSession session) {
-    dao = new FruitMapperBuilder(session).build().fruitDao(CqlIdentifier.fromCql("k1"));
+  public FruitService(CqlSession session, FruitServiceConfig fruitServiceConfig) {
+    dao =
+        new FruitMapperBuilder(session)
+            .build()
+            .fruitDao(CqlIdentifier.fromCql(fruitServiceConfig.keyspace));
   }
 
   public void save(Fruit fruit) {
@@ -126,6 +149,7 @@ public class FruitService {
 }
 ----
 Please note the construction of `FruitDao` instance in the constructor. It uses a `CqlSession` instance injected automatically by the cassandra-quarkus extension.
+It is also using the injected `FruitServiceConfig` with the keyspace provided via the `application.properties` file.
 
 The last missing piece is the REST API that will expose GET and POST methods:
 [source,java]
