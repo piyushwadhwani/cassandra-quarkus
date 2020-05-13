@@ -1,6 +1,7 @@
 = Quarkus - Using the Cassandra Client
 
-Cassandra is a well known NoSQL Database that is widely used.
+Apache Cassandra® is a free and open-source, distributed, wide column store, NoSQL database management system designed
+to handle large amounts of data across many commodity servers, providing high availability with no single point of failure.
 
 In this guide, we will see how you can get your REST services to use a Cassandra database.
 
@@ -203,6 +204,7 @@ quarkus.cassandra.load-balancing-policy.local-datacenter=datacenter1
 ----
 
 You can configure all Java driver settings using `application.conf` or `application.json` files.
+They need to be located in the resources directory of your application.
 They will be passed automatically to the underlying driver configuration mechanism.
 Settings defined in `application.properties` with the `quarkus.cassandra` prefix will have priority over settings defined in `application.conf` or `application.json`.
 
@@ -212,6 +214,7 @@ To see the full list of settings, please refer to the {reference-conf-url}[refer
 By default, `CassandraClient` is configured to access a local Cassandra database on port 9042 (the default Cassandra port).
 If you have a local running database on this port, you should assert that:
 `quarkus.cassandra.load-balancing-policy.local-datacenter` setting is equal to dc of your local cassandra instance.
+This value can be found with `SELECT data_center FROM system.local` query.
 
 If you want to use Docker to run a Cassandra database, you can use the following command to launch one:
 [source,shell]
