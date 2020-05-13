@@ -2,7 +2,7 @@
 
 To generate the documentation run:
 
-    mvn package -Pdocumentation-pdf
+    mvn package -Prelease
 
 ## HTML docs
 To see the documentation in the HTML format:
