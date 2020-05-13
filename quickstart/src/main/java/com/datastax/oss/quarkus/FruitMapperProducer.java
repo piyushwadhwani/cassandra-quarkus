@@ -30,7 +30,7 @@ public class FruitMapperProducer {
 
   @Produces
   @ApplicationScoped
-  FruitMapper produceService() {
+  FruitMapper produceFruitMapper() {
     return new FruitMapperBuilder(cqlSession).build();
   }
 }

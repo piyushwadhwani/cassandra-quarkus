@@ -124,6 +124,30 @@ To make it work, we need to add this setting to the `application.properties` fil
 fruit.dao.keyspace=k1
 ----
 
+The instance of a `FruitMapper` should be shared between services that are using it within an application.
+We should leverage Quarkus Dependency Injection container and inject the instance of constructed `FruitMapper`:
+[source, java]
+----
+import javax.enterprise.inject.Produces;
+
+public class FruitMapperProducer {
+  private final CqlSession cqlSession;
+
+  @Inject
+  public FruitMapperProducer(CqlSession cqlSession) {
+    this.cqlSession = cqlSession;
+  }
+
+  @Produces
+  @ApplicationScoped
+  FruitMapper produceFruitMapper() {
+    return new FruitMapperBuilder(cqlSession).build();
+  }
+}
+----
+Please note the `CqlSession` instance injected automatically by the cassandra-quarkus extension in the `FruitMapperProducer` constructor.
+The `produceFruitMapper()` method is constructing `FruitMapper` that will be injected into the Di container by the Quarkus.
+
 Now create a `com.datastax.oss.quarkus.FruitService` that will be the business layer of our application and store/load the fruits from the Cassandra database.
 [source,java]
 ----
@@ -132,11 +156,8 @@ public class FruitService {
   private final FruitDao dao;
 
   @Inject
-  public FruitService(CqlSession session, FruitServiceConfig fruitServiceConfig) {
-    dao =
-        new FruitMapperBuilder(session)
-            .build()
-            .fruitDao(CqlIdentifier.fromCql(fruitServiceConfig.keyspace));
+  public FruitService(FruitMapper fruitMapper, FruitServiceConfig fruitServiceConfig) {
+    dao = fruitMapper.fruitDao(CqlIdentifier.fromCql(fruitServiceConfig.keyspace));
   }
 
   public void save(Fruit fruit) {
@@ -148,7 +169,7 @@ public class FruitService {
   }
 }
 ----
-Please note the construction of `FruitDao` instance in the constructor. It uses a `CqlSession` instance injected automatically by the cassandra-quarkus extension.
+Please note the construction of `FruitDao` instance in the constructor. It uses a `FruitMapper` instance injected automatically by the `FruitMapperProducer`.
 It is also using the injected `FruitServiceConfig` with the keyspace provided via the `application.properties` file.
 
 The last missing piece is the REST API that will expose GET and POST methods:
