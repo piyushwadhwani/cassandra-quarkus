@@ -26,8 +26,11 @@ public class FruitService {
   private final FruitDao dao;
 
   @Inject
-  public FruitService(CqlSession session) {
-    dao = new FruitMapperBuilder(session).build().fruitDao(CqlIdentifier.fromCql("k1"));
+  public FruitService(CqlSession session, FruitServiceConfig fruitServiceConfig) {
+    dao =
+        new FruitMapperBuilder(session)
+            .build()
+            .fruitDao(CqlIdentifier.fromCql(fruitServiceConfig.keyspace));
   }
 
   public void save(Fruit fruit) {
