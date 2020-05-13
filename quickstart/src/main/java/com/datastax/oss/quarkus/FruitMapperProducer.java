@@ -15,25 +15,22 @@
  */
 package com.datastax.oss.quarkus;
 
-import com.datastax.oss.driver.api.core.CqlIdentifier;
-import java.util.List;
+import com.datastax.oss.driver.api.core.CqlSession;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-@ApplicationScoped
-public class FruitService {
-  private final FruitDao dao;
+public class FruitMapperProducer {
+  private final CqlSession cqlSession;
 
   @Inject
-  public FruitService(FruitMapper fruitMapper, FruitServiceConfig fruitServiceConfig) {
-    dao = fruitMapper.fruitDao(CqlIdentifier.fromCql(fruitServiceConfig.keyspace));
+  public FruitMapperProducer(CqlSession cqlSession) {
+    this.cqlSession = cqlSession;
   }
 
-  public void save(Fruit fruit) {
-    dao.update(fruit);
-  }
-
-  public List<Fruit> get(String id) {
-    return dao.findById(id).all();
+  @Produces
+  @ApplicationScoped
+  FruitMapper produceService() {
+    return new FruitMapperBuilder(cqlSession).build();
   }
 }
