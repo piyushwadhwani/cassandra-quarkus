@@ -47,9 +47,11 @@ import io.quarkus.arc.Unremovable;
 import io.quarkus.arc.deployment.BeanContainerListenerBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanGizmoAdaptor;
+import io.quarkus.arc.deployment.SyntheticBeansRuntimeInitBuildItem;
 import io.quarkus.deployment.Capabilities;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.Consume;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceBuildItem;
@@ -228,6 +230,7 @@ class CassandraClientProcessor {
 
   @Record(RUNTIME_INIT)
   @BuildStep
+  @Consume(SyntheticBeansRuntimeInitBuildItem.class)
   void configureRuntimeProperties(
       CassandraClientRecorder recorder,
       CassandraClientConfig runtimeConfig,
@@ -236,6 +239,7 @@ class CassandraClientProcessor {
     recorder.configureRuntimeProperties(runtimeConfig);
     configureMetrics(recorder, buildTimeConfig, capabilities);
     recorder.configureCompression(buildTimeConfig.protocolCompression);
+    recorder.setInjectedNettyEventLoop();
   }
 
   private void configureMetrics(
