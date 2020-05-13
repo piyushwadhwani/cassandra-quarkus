@@ -11,16 +11,6 @@
       <includes>
         <include>*.pdf</include>
       </includes>
-      <excludes>
-        <exclude>0-glossary.pdf</exclude>
-        <exclude>attributes.pdf</exclude>
-        <exclude>duration-format-note.pdf</exclude>
-        <exclude>faq.pdf</exclude>
-        <exclude>index.pdf</exclude>
-        <exclude>quarkus-intro.pdf</exclude>
-        <exclude>README.pdf</exclude>
-        <exclude>status-include.pdf</exclude>
-      </excludes>
       <outputDirectory/>
     </fileSet>
   </fileSets>
